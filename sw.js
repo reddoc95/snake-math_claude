@@ -1,4 +1,4 @@
-const CACHE_NAME = 'snakemath-v3';
+const CACHE_NAME = 'snakemath-v4';
 const ASSETS = [
     './',
     './index.html',
