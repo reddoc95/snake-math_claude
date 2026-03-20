@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="description" content="Snake Math - 뱀 게임으로 배우는 수학!">
+    <title>Snake Math 🐍</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="assets/icon-192.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Auth Screen -->
+    <div id="auth-screen" class="screen active">
+        <div class="auth-content">
+            <div class="splash-logo">
+                <div class="snake-logo-head">1</div>
+            </div>
+            <h1 class="game-title" style="font-size:36px">Snake Math</h1>
+
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="tab-login">로그인</button>
+                <button class="auth-tab" id="tab-register">회원가입</button>
+            </div>
+
+            <form id="login-form" class="auth-form">
+                <div class="input-group">
+                    <label>아이디</label>
+                    <input type="text" id="login-id" placeholder="아이디 입력" autocomplete="username">
+                </div>
+                <div class="input-group">
+                    <label>비밀번호</label>
+                    <input type="password" id="login-pw" placeholder="비밀번호 입력" autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-large">로그인</button>
+            </form>
+
+            <form id="register-form" class="auth-form" style="display:none">
+                <div class="input-group">
+                    <label>아이디</label>
+                    <input type="text" id="reg-id" placeholder="아이디 입력 (4자 이상)" autocomplete="username">
+                </div>
+                <div class="input-group">
+                    <label>비밀번호</label>
+                    <input type="password" id="reg-pw" placeholder="비밀번호 입력 (4자 이상)" autocomplete="new-password">
+                </div>
+                <div class="input-group">
+                    <label>비밀번호 확인</label>
+                    <input type="password" id="reg-pw2" placeholder="비밀번호 다시 입력" autocomplete="new-password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-large">회원가입</button>
+            </form>
+
+            <button id="btn-guest" class="btn btn-secondary">게스트로 시작</button>
+        </div>
+    </div>
+
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="screen">
+        <div class="stars-container" id="stars-container"></div>
+        <div class="splash-content">
+            <div class="user-info" id="user-info" style="display:none">
+                <span id="user-name"></span>
+                <button id="btn-logout" class="btn-logout">로그아웃</button>
+            </div>
+            <div class="splash-logo">
+                <div class="logo-glow"></div>
+                <div class="snake-logo-head">1</div>
+                <div class="snake-logo-trail">
+                    <div class="trail-segment"></div>
+                    <div class="trail-segment"></div>
+                    <div class="trail-segment"></div>
+                </div>
+            </div>
+            <h1 class="game-title">Snake Math</h1>
+            <p class="game-subtitle">뱀 게임으로 배우는 수학!</p>
+            <button id="btn-start" class="btn btn-primary btn-large pulse-animation">게임 시작</button>
+            <button id="btn-level-select" class="btn btn-secondary">단계 선택</button>
+            <button id="btn-ranking" class="btn btn-secondary">🏆 랭킹</button>
+            <div class="best-record" id="best-record" style="display:none">
+                <div class="record-row"><span>🏆 최고 단계</span><span id="best-level">1</span></div>
+                <div class="record-row"><span>⭐ 최고 점수</span><span id="best-score">0</span></div>
+                <div class="record-row"><span>🔥 최고 콤보</span><span id="best-combo">0</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Level Select Screen -->
+    <div id="level-screen" class="screen">
+        <div class="screen-header">
+            <button class="btn-back" id="btn-back-level">←</button>
+            <h2>단계 선택</h2>
+            <div></div>
+        </div>
+        <div class="level-grid" id="level-grid"></div>
+    </div>
+
+    <!-- Ranking Screen -->
+    <div id="ranking-screen" class="screen">
+        <div class="screen-header">
+            <button class="btn-back" id="btn-back-ranking">←</button>
+            <h2>🏆 랭킹</h2>
+            <div></div>
+        </div>
+        <div class="ranking-tabs">
+            <button class="rank-tab active" data-tab="score">점수</button>
+            <button class="rank-tab" data-tab="combo">콤보</button>
+            <button class="rank-tab" data-tab="time">클리어 시간</button>
+        </div>
+        <div class="ranking-list" id="ranking-list"></div>
+    </div>
+
+    <!-- Tutorial Screen -->
+    <div id="tutorial-screen" class="screen">
+        <div class="tutorial-content">
+            <div class="tutorial-slides" id="tutorial-slides">
+                <div class="tutorial-slide active">
+                    <div class="tutorial-icon">🐍</div>
+                    <h3>뱀을 조종하세요!</h3>
+                    <p>스와이프 또는 방향 버튼으로<br>뱀을 움직여요</p>
+                </div>
+                <div class="tutorial-slide">
+                    <div class="tutorial-icon">🔢</div>
+                    <h3>수학 문제를 풀어요!</h3>
+                    <p>화면 상단의 문제를 보고<br>정답 숫자를 먹으세요</p>
+                </div>
+                <div class="tutorial-slide">
+                    <div class="tutorial-icon">📏</div>
+                    <h3>뱀을 키우세요!</h3>
+                    <p>정답을 맞추면 몸이 길어져요<br>목표 길이에 도달하면 다음 단계!</p>
+                </div>
+                <div class="tutorial-slide">
+                    <div class="tutorial-icon">⚠️</div>
+                    <h3>조심하세요!</h3>
+                    <p>오답을 먹으면 몸이 줄어들고<br>벽이나 몸에 부딪히면 생명을 잃어요</p>
+                </div>
+            </div>
+            <div class="tutorial-dots" id="tutorial-dots"></div>
+            <div class="tutorial-buttons">
+                <button id="btn-tutorial-skip" class="btn btn-secondary">건너뛰기</button>
+                <button id="btn-tutorial-next" class="btn btn-primary">다음</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen">
+        <!-- Game HUD -->
+        <div class="game-hud">
+            <div class="hud-top">
+                <div class="hud-lives" id="hud-lives">
+                    <span class="heart active">❤️</span>
+                    <span class="heart active">❤️</span>
+                    <span class="heart active">❤️</span>
+                </div>
+                <div class="hud-center">
+                    <div class="hud-level" id="hud-level">단계 1</div>
+                    <div class="hud-score" id="hud-score">0점</div>
+                    <div class="score-popup" id="score-popup"></div>
+                </div>
+                <div class="hud-combo" id="hud-combo">🔥 0 콤보</div>
+                <div class="hud-timer" id="hud-timer">⏱ 00:00</div>
+                <button class="btn-pause" id="btn-pause">⏸</button>
+            </div>
+            <div class="hud-problem" id="hud-problem">
+                <div class="problem-text" id="problem-text">3 + 5 = □</div>
+            </div>
+            <div class="hud-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <div class="progress-label" id="progress-label">0 / 20</div>
+            </div>
+        </div>
+
+        <!-- Game Canvas -->
+        <canvas id="game-canvas"></canvas>
+
+        <!-- Active Item Indicator -->
+        <div class="active-items" id="active-items"></div>
+
+        <!-- Game Tutorial Overlay -->
+        <div id="game-overlay" class="game-overlay">
+            <div class="overlay-content">
+                <h3>🎮 조작법</h3>
+                <p class="control-desc">👆 화면을 스와이프하여 방향을 바꾸세요</p>
+                <h3>📦 아이템 효과</h3>
+                <div class="item-grid">
+                    <div class="item-row"><span class="item-icon">⭐</span><span>성장 부스트 (2배 성장)</span></div>
+                    <div class="item-row"><span class="item-icon">💣</span><span>폭탄 (길이 감소!)</span></div>
+                    <div class="item-row"><span class="item-icon">🐢</span><span>슬로우 (속도 감소)</span></div>
+                    <div class="item-row"><span class="item-icon">⚡</span><span>스피드 (속도 증가!)</span></div>
+                    <div class="item-row"><span class="item-icon">🛡️</span><span>보호막 (오답 1회 방어)</span></div>
+                    <div class="item-row"><span class="item-icon">❤️‍🩹</span><span>생명 추가</span></div>
+                    <div class="item-row"><span class="item-icon">🧲</span><span>자석 (정답 끌어옴)</span></div>
+                </div>
+                <p class="overlay-dismiss">화면을 터치하면 시작합니다</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pause Modal -->
+    <div id="pause-modal" class="modal">
+        <div class="modal-content">
+            <h2>일시정지</h2>
+            <div class="pause-info">
+                <p>단계: <span id="pause-level">1</span></p>
+                <p>길이: <span id="pause-length">1</span></p>
+            </div>
+            <button id="btn-resume" class="btn btn-primary">계속하기</button>
+            <button id="btn-restart" class="btn btn-secondary">다시 시작</button>
+            <button id="btn-quit" class="btn btn-danger">나가기</button>
+            <div class="settings-row">
+                <label>효과음</label>
+                <label class="toggle">
+                    <input type="checkbox" id="toggle-sound" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div class="settings-row">
+                <label>진동</label>
+                <label class="toggle">
+                    <input type="checkbox" id="toggle-vibration" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Level Clear Modal -->
+    <div id="clear-modal" class="modal">
+        <div class="modal-content celebration">
+            <div class="confetti-container" id="confetti-container"></div>
+            <h2>🎉 단계 클리어!</h2>
+            <div class="clear-stats">
+                <div class="stat">
+                    <span class="stat-label">클리어 단계</span>
+                    <span class="stat-value" id="clear-level">1</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">클리어 시간</span>
+                    <span class="stat-value" id="clear-time">0:00</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">정답률</span>
+                    <span class="stat-value" id="clear-accuracy">100%</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">최고 콤보</span>
+                    <span class="stat-value" id="clear-combo">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">점수</span>
+                    <span class="stat-value" id="clear-score">0</span>
+                </div>
+            </div>
+            <button id="btn-next-level" class="btn btn-primary btn-large">다음 단계 →</button>
+        </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="gameover-modal" class="modal">
+        <div class="modal-content gameover">
+            <h2>😢 게임 오버</h2>
+            <div class="clear-stats">
+                <div class="stat">
+                    <span class="stat-label">도달 단계</span>
+                    <span class="stat-value" id="over-level">1</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">총 점수</span>
+                    <span class="stat-value" id="over-score">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">최고 콤보</span>
+                    <span class="stat-value" id="over-combo">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">정답률</span>
+                    <span class="stat-value" id="over-accuracy">0%</span>
+                </div>
+            </div>
+            <button id="btn-retry" class="btn btn-primary btn-large">다시 도전</button>
+            <button id="btn-home" class="btn btn-secondary">홈으로</button>
+        </div>
+    </div>
+
+    <!-- Feedback Toast -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Combo Display -->
+    <div id="combo-display" class="combo-display"></div>
+
+    <!-- Generate PWA icons dynamically -->
+    <script>
+    (function() {
+        function genIcon(size) {
+            const c = document.createElement('canvas');
+            c.width = c.height = size;
+            const ctx = c.getContext('2d');
+            ctx.fillStyle = '#1a1a2e';
+            ctx.fillRect(0, 0, size, size);
+            const bs = size * 0.5, bx = (size - bs) / 2, by = size * 0.15, r = bs * 0.2;
+            const g = ctx.createLinearGradient(bx, by, bx, by + bs);
+            g.addColorStop(0, '#ef5350'); g.addColorStop(1, '#c62828');
+            ctx.fillStyle = g;
+            ctx.beginPath();
+            ctx.moveTo(bx+r,by); ctx.lineTo(bx+bs-r,by);
+            ctx.quadraticCurveTo(bx+bs,by,bx+bs,by+r);
+            ctx.lineTo(bx+bs,by+bs-r);
+            ctx.quadraticCurveTo(bx+bs,by+bs,bx+bs-r,by+bs);
+            ctx.lineTo(bx+r,by+bs);
+            ctx.quadraticCurveTo(bx,by+bs,bx,by+bs-r);
+            ctx.lineTo(bx,by+r);
+            ctx.quadraticCurveTo(bx,by,bx+r,by);
+            ctx.fill();
+            const es = bs*0.12, ey = by+bs*0.35;
+            ctx.fillStyle='#fff';
+            ctx.beginPath(); ctx.arc(bx+bs*0.35,ey,es,0,Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.arc(bx+bs*0.65,ey,es,0,Math.PI*2); ctx.fill();
+            ctx.fillStyle='#1a1a2e';
+            ctx.beginPath(); ctx.arc(bx+bs*0.37,ey,es*0.5,0,Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.arc(bx+bs*0.67,ey,es*0.5,0,Math.PI*2); ctx.fill();
+            ctx.fillStyle='rgba(255,255,255,0.9)';
+            ctx.font=`bold ${bs*0.35}px sans-serif`;
+            ctx.textAlign='center'; ctx.textBaseline='middle';
+            ctx.fillText('1',size/2,by+bs*0.7);
+            ctx.fillStyle='#a29bfe';
+            ctx.font=`bold ${size*0.1}px sans-serif`;
+            ctx.fillText('Snake',size/2,by+bs+size*0.08);
+            ctx.fillStyle='#fd79a8';
+            ctx.fillText('Math',size/2,by+bs+size*0.18);
+            return c.toDataURL('image/png');
+        }
+        // Set apple-touch-icon
+        const link = document.querySelector('link[rel="apple-touch-icon"]');
+        if (link) link.href = genIcon(192);
+        // Set favicon
+        const fav = document.createElement('link');
+        fav.rel = 'icon'; fav.type = 'image/png'; fav.href = genIcon(64);
+        document.head.appendChild(fav);
+    })();
+    </script>
+
+    <script src="js/sound.js"></script>
+    <script src="js/math.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/ui.js"></script>
+</body>
+</html>
