@@ -691,12 +691,20 @@ class SnakeGame {
                     case 'lightning': this.speedModifier = 1; break;
                     case 'shield': this.shieldActive = false; break;
                 }
+                // When magnet expires, relocate any numbers stuck on snake body
+                if (key === 'magnet') {
+                    for (const n of this.numbers) {
+                        if (this.snake.some(s => s.x === n.x && s.y === n.y)) {
+                            const empty = this._findEmptyCell();
+                            if (empty) { n.x = empty.x; n.y = empty.y; }
+                        }
+                    }
+                }
                 delete this.activeEffects[key];
             }
         }
 
         // Magnet effect - move correct answer toward snake head (once per move tick)
-        // Only pull along one axis per tick to prevent teleporting onto head
         if (this.activeEffects['magnet'] && this._magnetMoveReady) {
             this._magnetMoveReady = false;
             const head = this.snake[0];
@@ -706,14 +714,20 @@ class SnakeGame {
                 const dx = head.x - n.x;
                 const dy = head.y - n.y;
                 const dist = Math.abs(dx) + Math.abs(dy);
-                // Don't pull onto head directly - leave at least 1 cell gap
-                // so normal movement collision handles eating
+                // Don't pull onto head - leave 1 cell for normal collision
                 if (dist <= 1) continue;
-                // Pull one step along the longer axis only
+                // Calculate candidate position
+                let nx = n.x, ny = n.y;
                 if (Math.abs(dx) >= Math.abs(dy)) {
-                    n.x += Math.sign(dx);
+                    nx += Math.sign(dx);
                 } else {
-                    n.y += Math.sign(dy);
+                    ny += Math.sign(dy);
+                }
+                // Prevent pulling onto snake body
+                const onSnake = this.snake.some(s => s.x === nx && s.y === ny);
+                if (!onSnake) {
+                    n.x = nx;
+                    n.y = ny;
                 }
             }
         }
