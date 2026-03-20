@@ -1,0 +1,12 @@
+{
+  "appId": "com.snakemath.app",
+  "appName": "Snake Math",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "backgroundColor": "#1a1a2e",
+    "allowMixedContent": false
+  }
+}
