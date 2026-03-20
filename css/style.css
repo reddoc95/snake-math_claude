@@ -912,42 +912,45 @@ body::before {
 }
 
 .hud-level {
-    font-size: 15px;
+    font-size: 17px;
     font-weight: 800;
     color: var(--primary-light);
-    background: rgba(124, 109, 240, 0.2);
+    background: rgba(124, 109, 240, 0.25);
     padding: 6px 14px;
     border-radius: 20px;
-    border: 1px solid rgba(124, 109, 240, 0.3);
+    border: 1px solid rgba(124, 109, 240, 0.4);
     letter-spacing: 0.3px;
+    text-shadow: 0 1px 4px rgba(124, 109, 240, 0.4);
 }
 
 .hud-score {
     position: relative;
-    font-size: 15px;
+    font-size: 17px;
     font-weight: 800;
     color: var(--warning);
     display: flex;
     align-items: center;
     gap: 4px;
     transition: all 0.2s ease;
-    background: rgba(255, 217, 61, 0.1);
+    background: rgba(255, 217, 61, 0.15);
     padding: 6px 14px;
     border-radius: 20px;
-    border: 1px solid rgba(255, 217, 61, 0.2);
+    border: 1px solid rgba(255, 217, 61, 0.3);
+    text-shadow: 0 1px 4px rgba(255, 217, 61, 0.4);
 }
 
 .hud-combo {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 800;
     color: #ff6b6b;
-    background: rgba(255, 107, 107, 0.15);
+    background: rgba(255, 107, 107, 0.2);
     padding: 6px 14px;
     border-radius: 20px;
-    border: 1px solid rgba(255, 107, 107, 0.25);
+    border: 1px solid rgba(255, 107, 107, 0.35);
     transition: all 0.3s var(--ease-spring);
     min-width: 80px;
     text-align: center;
+    text-shadow: 0 1px 4px rgba(255, 107, 107, 0.3);
 }
 
 .hud-combo.active {
@@ -964,14 +967,15 @@ body::before {
 }
 
 .hud-timer {
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 700;
-    color: var(--text-secondary);
-    background: rgba(255, 255, 255, 0.06);
-    padding: 4px 12px;
+    color: #74b9ff;
+    background: rgba(116, 185, 255, 0.12);
+    padding: 5px 12px;
     border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(116, 185, 255, 0.2);
     font-variant-numeric: tabular-nums;
+    text-shadow: 0 1px 3px rgba(116, 185, 255, 0.3);
 }
 
 /* Score pop animation - add .pop class via JS on score change */
@@ -1247,88 +1251,7 @@ body::before {
 }
 
 
-/* ================================================================
-   13. D-Pad Controls (circular layout)
-   ================================================================ */
-.dpad-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    padding: 12px 0 24px;
-    padding-bottom: calc(var(--safe-bottom) + 24px);
-    flex-shrink: 0;
-    z-index: 20;
-}
-
-.dpad-container.hidden {
-    display: none;
-}
-
-.dpad {
-    display: grid;
-    grid-template-columns: repeat(3, 68px);
-    grid-template-rows: repeat(3, 68px);
-    gap: 6px;
-    position: relative;
-}
-
-.dpad-btn {
-    background: rgba(255, 255, 255, 0.07);
-    border: 1.5px solid rgba(255, 255, 255, 0.12);
-    color: rgba(255, 255, 255, 0.85);
-    border-radius: 50%;
-    font-size: 24px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition:
-        transform var(--transition-fast) var(--ease-spring),
-        background var(--transition-fast) ease,
-        box-shadow var(--transition-fast) ease;
-    -webkit-tap-highlight-color: transparent;
-    position: relative;
-    overflow: hidden;
-    min-width: 48px;
-    min-height: 48px;
-}
-
-/* Ripple effect on tap */
-.dpad-btn::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(124, 109, 240, 0.4) 0%, transparent 70%);
-    opacity: 0;
-    transform: scale(0.5);
-    transition:
-        opacity var(--transition-fast) ease,
-        transform var(--transition-fast) ease;
-}
-
-.dpad-btn:active {
-    background: rgba(124, 109, 240, 0.35);
-    transform: scale(0.88);
-    border-color: rgba(124, 109, 240, 0.5);
-    box-shadow: 0 0 16px rgba(124, 109, 240, 0.3);
-}
-
-.dpad-btn:active::after {
-    opacity: 1;
-    transform: scale(1);
-}
-
-.dpad-center {
-    background: transparent;
-    border: 1.5px solid rgba(255, 255, 255, 0.05);
-    pointer-events: none;
-    border-radius: 50%;
-}
-
-.dpad-center::after {
-    display: none;
-}
+/* Section 13: D-Pad removed (swipe-only controls) */
 
 
 /* ================================================================
@@ -2090,12 +2013,6 @@ body::before {
     .btn-large { padding: 13px 36px; font-size: 17px; min-height: 50px; }
     .problem-text { font-size: 24px; letter-spacing: 2px; }
     .hud-problem { padding: 8px 12px; margin-bottom: 4px; }
-    .dpad {
-        grid-template-columns: repeat(3, 52px);
-        grid-template-rows: repeat(3, 52px);
-        gap: 4px;
-    }
-    .dpad-btn { font-size: 18px; }
     .hud-lives { font-size: 20px; }
     .tutorial-icon { font-size: 52px; }
     .tutorial-slide h3 { font-size: 22px; }
@@ -2112,12 +2029,6 @@ body::before {
     .btn-large { padding: 15px 42px; font-size: 18px; min-height: 54px; }
     .problem-text { font-size: 26px; }
     .hud-problem { padding: 10px 14px; margin-bottom: 6px; }
-    .dpad {
-        grid-template-columns: repeat(3, 60px);
-        grid-template-rows: repeat(3, 60px);
-        gap: 5px;
-    }
-    .dpad-btn { font-size: 20px; }
 }
 
 /* Tablets and larger screens */
@@ -2138,16 +2049,6 @@ body::before {
 
     .level-card .level-num {
         font-size: 36px;
-    }
-
-    .dpad {
-        grid-template-columns: repeat(3, 76px);
-        grid-template-rows: repeat(3, 76px);
-        gap: 8px;
-    }
-
-    .dpad-btn {
-        font-size: 28px;
     }
 
     .game-title {
@@ -2173,14 +2074,6 @@ body::before {
 
     .game-title { font-size: 32px; }
     .game-subtitle { display: none; }
-
-    .dpad {
-        grid-template-columns: repeat(3, 48px);
-        grid-template-rows: repeat(3, 48px);
-        gap: 3px;
-    }
-
-    .dpad-btn { font-size: 16px; }
 
     .hud-problem { padding: 6px 10px; margin-bottom: 4px; }
     .problem-text { font-size: 22px; }

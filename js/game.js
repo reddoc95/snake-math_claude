@@ -118,6 +118,7 @@ class SnakeGame {
         this.score = 0;
         this.combo = 0;
         this.maxCombo = 0;
+        this.totalCombo = 0;
         this.speed = this.levelConfig.speed;
         this.baseSpeed = this.levelConfig.speed;
         this.speedModifier = 1;
@@ -455,6 +456,7 @@ class SnakeGame {
 
     _onCorrectAnswer() {
         this.combo++;
+        this.totalCombo = (this.totalCombo || 0) + 1;
         if (this.combo > this.maxCombo) this.maxCombo = this.combo;
 
         const growAmount = this.doubleGrowth ? 2 : 1;
@@ -1835,7 +1837,7 @@ class SnakeGame {
         return this.snake.length + this.growPending;
     }
 
-    getTotalCombo() { return this.combo; }
+    getTotalCombo() { return this.totalCombo || 0; }
 }
 
 window.SnakeGame = SnakeGame;

@@ -488,9 +488,10 @@
     }
 
     function updateGameHUD() {
-        if (!game || !game.problem) return;
+        if (!game) return;
 
         // Problem display with styled blank
+        if (!game.problem) return;
         const parts = game.problem.displayParts;
         let html = '';
         parts.forEach(p => {
@@ -506,13 +507,15 @@
         $('hud-level').textContent = `단계 ${game.level}`;
         $('hud-score').textContent = `${game.score}점`;
 
-        // Combo display in HUD (persistent across levels)
-        const combo = game.getTotalCombo ? game.getTotalCombo() : game.combo;
+        // Combo display in HUD
+        const totalCombo = game.getTotalCombo ? game.getTotalCombo() : 0;
+        const streak = game.combo || 0;
         const comboEl = $('hud-combo');
-        comboEl.textContent = `🔥 ${combo} 콤보`;
-        if (combo >= 3) {
+        if (streak >= 2) {
+            comboEl.textContent = `🔥 ${streak}연속 (총 ${totalCombo})`;
             comboEl.classList.add('active');
         } else {
+            comboEl.textContent = `🔥 총 ${totalCombo} 콤보`;
             comboEl.classList.remove('active');
         }
 
